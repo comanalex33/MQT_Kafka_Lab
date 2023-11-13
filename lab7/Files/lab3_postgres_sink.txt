@@ -1,0 +1,20 @@
+1. In Control Center create JDBC sink connector. The configuration is in file postgres-sink-connector-1.json
+
+http://localhost:9021
+
+2. In schema registry container produce avro messages
+
+docker exec -ti schema-registry /usr/bin/kafka-avro-console-producer  --bootstrap-server kafka:19092  --topic customers    --property schema.registry.url=http://schema-registry:8081  --property value.schema="{\"name\":\"lau\",\"type\":\"record\",\"name\":\"customer\",\"fields\":[{\"name\":\"id\",\"type\":\"int\"},{\"name\":\"name\",\"type\":\"string\"}]}"
+
+the command can also be executed from Docker Desktop, schema-registry terminal:
+ /usr/bin/kafka-avro-console-producer  --bootstrap-server kafka:19092  --topic customers2    --property schema.registry.url=http://schema-registry:8081  --property value.schema="{\"name\":\"lau\",\"type\":\"record\",\"name\":\"customer\",\"fields\":[{\"name\":\"id\",\"type\":\"int\"},{\"name\":\"name\",\"type\":\"string\"}]}"
+
+add in the producer console next lines:
+
+{"id": 1, "name": "Jane Doe"}
+{"id": 2, "name": "John Smith"}
+{"id": 3, "name": "Ann Black"}
+
+3. Check the table in http://localhost:8080
+
+NOTE: value.schema="{\"name\"..."  is used with ". For MacOS we might need to use ''  value.schema='{\"name\"...'
